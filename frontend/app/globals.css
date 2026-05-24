@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f2ea;
+  --foreground: #15120f;
+  --accent: #f06d3b;
+  --accent-dark: #c55328;
+  --panel: #fffaf3;
+  --border: rgba(21, 18, 15, 0.12);
+  --shadow: 0 30px 80px -40px rgba(21, 18, 15, 0.5);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-body);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #15120f;
+    --foreground: #f7f2ea;
+    --accent: #ff8a5b;
+    --accent-dark: #f06d3b;
+    --panel: #1f1a17;
+    --border: rgba(247, 242, 234, 0.16);
+    --shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.75);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.page-bg {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.page-bg::before {
+  content: "";
+  position: absolute;
+  inset: -20% 0 0 0;
+  background: radial-gradient(
+      circle at 15% 20%,
+      rgba(240, 109, 59, 0.25),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(31, 26, 23, 0.2),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 70% 80%,
+      rgba(255, 200, 140, 0.35),
+      transparent 45%
+    );
+  pointer-events: none;
+  opacity: 0.9;
+  filter: blur(2px);
+}
+
+.page-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.12),
+      transparent 65%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(21, 18, 15, 0.05) 0,
+      rgba(21, 18, 15, 0.05) 1px,
+      transparent 1px,
+      transparent 16px
+    );
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.fade-up {
+  animation: fade-up 0.8s ease-out both;
+}
+
+.fade-up-delayed {
+  animation: fade-up 0.9s ease-out 0.1s both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
