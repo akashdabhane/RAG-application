@@ -60,9 +60,18 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 # EMBEDDING MODEL
 # =========================
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+_embeddings = None
+
+
+def get_embeddings():
+    global _embeddings
+
+    if _embeddings is None:
+        _embeddings = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2"
+        )
+
+    return _embeddings
 
 
 # =========================
@@ -165,7 +174,7 @@ def upload_document():
         vector_store = Chroma(
             collection_name=collection_name,
             persist_directory=CHROMA_DB_DIR,
-            embedding_function=embeddings
+            embedding_function=get_embeddings()
         )
 
         # -------------------------
@@ -215,7 +224,7 @@ def chat():
         vector_store = Chroma(
             collection_name=collection_name,
             persist_directory=CHROMA_DB_DIR,
-            embedding_function=embeddings
+            embedding_function=get_embeddings()
         )
 
         # -------------------------
