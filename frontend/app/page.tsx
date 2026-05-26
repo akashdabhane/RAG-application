@@ -16,7 +16,7 @@ type UploadResult = {
 
 export default function Home() {
   const apiBase = useMemo(
-    () => process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5000",
+    () => process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://rag-application-production-7bc3.up.railway.app",
     [],
   );
   const [emailId, setEmailId] = useState("company_policies");
