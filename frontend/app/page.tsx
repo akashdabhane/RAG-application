@@ -145,7 +145,7 @@ export default function Home() {
   return (
     <div className="page-bg flex flex-1 flex-col">
       <main className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-5 sm:px-6 lg:gap-10 lg:px-10 lg:py-6">
-        <div className="fade-up flex w-full flex-wrap items-center gap-2 rounded-full border border-[color:var(--border)] bg-[color:var(--panel)] p-2 shadow-[var(--shadow)] sm:gap-3">
+        <div className="text-sm md:text-base fade-up flex w-full flex-wrap items-center gap-2 rounded-full border border-[color:var(--border)] bg-[color:var(--panel)] p-2 shadow-[var(--shadow)] sm:gap-3">
           <button
             type="button"
             onClick={() => {
@@ -153,7 +153,7 @@ export default function Home() {
               setEmailId("company_policies");
               setMessages([]);
             }}
-            className={`flex items-center rounded-full px-5 py-2 text-sm font-semibold transition ${
+            className={`flex items-center rounded-full px-3 md:px-5 py-2 text-sm font-semibold transition ${
               activeTab === "enterprise"
                 ? "bg-[color:var(--foreground)] text-[color:var(--panel)]"
                 : "text-[color:var(--foreground)]/70 hover:text-[color:var(--foreground)]"
@@ -169,7 +169,7 @@ export default function Home() {
               setEmailId("");
               setMessages([]);
             }}
-            className={`flex items-center rounded-full px-5 py-2 text-sm font-semibold transition ${
+            className={`flex items-center rounded-full px-3 md:px-5 py-2 text-sm font-semibold transition ${
               activeTab === "personal"
                 ? "bg-[color:var(--foreground)] text-[color:var(--panel)]"
                 : "text-[color:var(--foreground)]/70 hover:text-[color:var(--foreground)]"

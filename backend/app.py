@@ -114,6 +114,18 @@ def to_collection_name(email_id: str) -> str:
     return f"user_{safe_id}"
 
 
+
+# =========================
+# HEALTH CHECK API
+# =========================
+@app.route("/health", methods=["GET"])
+def health_check():
+    return jsonify({
+        "message": "Server is healthy",
+        "status": "ok"
+    })
+
+
 # =========================
 # UPLOAD API
 # =========================
@@ -313,4 +325,4 @@ QUESTION:
 # =========================
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)
