@@ -215,6 +215,24 @@ export default function Home() {
                     "Upload a PDF, DOCX, or TXT file, then ask grounded questions."
                   )}
                 </div>
+                <div className="fade-up max-w-2xl rounded-2xl border border-amber-600/70 bg-gradient-to-br from-amber-100 via-amber-50 to-white px-4 py-3 text-xs text-amber-950 shadow-[0_12px_30px_-24px_rgba(120,53,15,0.45)] sm:text-sm">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full border border-amber-600/60 bg-amber-200 text-[color:var(--foreground)]">
+                      i
+                    </span>
+                    <span className="text-sm font-semibold uppercase tracking-[0.24em]">
+                      Notice
+                    </span>
+                  </div>
+                  <p className="mt-2 text-amber-950/90">
+                    This application is deployed on limited free-tier cloud
+                    infrastructure for demonstration purposes. Response latency
+                    is higher due to constrained compute resources, embedding
+                    model initialization, and vector database storage
+                    limitations. In a production-scale environment, the system
+                    performs significantly faster.
+                  </p>
+                </div>
               </div>
             </div>
 

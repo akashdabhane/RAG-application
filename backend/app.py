@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
+import re
 
 # LangChain imports
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -100,6 +101,19 @@ def load_document(file_path):
     return documents
 
 
+def to_collection_name(email_id: str) -> str:
+    safe_id = re.sub(r"[^a-zA-Z0-9._-]", "_", email_id)
+    safe_id = safe_id.strip("._-")
+
+    if len(safe_id) < 3:
+        safe_id = f"user_{safe_id}" if safe_id else "user_default"
+
+    if len(safe_id) > 512:
+        safe_id = safe_id[:512]
+
+    return f"user_{safe_id}"
+
+
 # =========================
 # UPLOAD API
 # =========================
@@ -170,7 +184,7 @@ def upload_document():
         # CREATE COLLECTION
         # -------------------------
 
-        collection_name = f"user_{email_id}"
+        collection_name = to_collection_name(email_id)
 
         vector_store = Chroma(
             collection_name=collection_name,
@@ -220,7 +234,11 @@ def chat():
         # LOAD USER COLLECTION
         # -------------------------
 
-        collection_name = email_id if email_id == "company_policies" else f"user_{email_id}"
+        collection_name = (
+            "company_policies"
+            if email_id == "company_policies"
+            else to_collection_name(email_id)
+        )
 
         vector_store = Chroma(
             collection_name=collection_name,
