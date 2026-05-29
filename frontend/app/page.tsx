@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
+  metadata?: Array<{ source: string; page_label: string }>;
 };
 
 type UploadResult = {
@@ -30,6 +31,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<"enterprise" | "personal">(
     "enterprise",
   );
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
 
   const handleUpload = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -109,7 +111,10 @@ export default function Home() {
       });
 
       const payload = (await response.json()) as
-        | { answer: string }
+        | {
+            answer: string;
+            metadata?: Array<{ source: string; page_label: string }>;
+          }
         | { error: string };
 
       if (!response.ok || "error" in payload) {
@@ -126,7 +131,11 @@ export default function Home() {
 
       setMessages((current) => [
         ...current,
-        { role: "assistant", content: payload.answer },
+        {
+          role: "assistant",
+          content: payload.answer,
+          metadata: "metadata" in payload ? payload.metadata : undefined,
+        },
       ]);
     } catch (error) {
       setMessages((current) => [
@@ -141,6 +150,16 @@ export default function Home() {
       setChatting(false);
     }
   };
+
+  useEffect(() => {
+    if (!chatEndRef.current) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    });
+  }, [messages]);
 
   return (
     <div className="page-bg flex flex-1 flex-col">
@@ -317,7 +336,7 @@ export default function Home() {
                 </span>
               </div>
 
-              <div className="mt-6 flex min-h-[260px] flex-col gap-4 rounded-[24px] border border-[color:var(--border)] bg-white/70 p-4 sm:min-h-[350px] sm:p-5">
+              <div className="chat-scroll mt-6 flex min-h-[260px] max-h-[350px] overflow-y-scroll flex-col gap-4 rounded-[24px] border border-[color:var(--border)] bg-white/70 p-4 sm:min-h-[350px] sm:p-5">
                 {messages.length === 0 ? (
                   <div className="text-sm text-[color:black]/50">
                     {activeTab === "enterprise"
@@ -340,9 +359,26 @@ export default function Home() {
                       <div className="mt-2 whitespace-pre-line">
                         {message.content}
                       </div>
+                      {message.metadata && message.metadata.length > 0 && (
+                        <div className="mt-3 rounded-xl border border-[color:var(--border)] bg-yellow-800 px-3 py-2 text-xs text-[color:var(--foreground)]/80">
+                          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--foreground)]/60">
+                            Sources
+                          </div>
+                          <ul className="mt-2 space-y-1">
+                            {message.metadata.map((item, metaIndex) => (
+                              <li key={`${item.source}-${item.page_label}-${metaIndex}`}>
+                                <span className="font-semibold">Page {item.page_label}</span>
+                                {" — "}
+                                <span className="break-all">{item.source}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   ))
                 )}
+                <div ref={chatEndRef} />
               </div>
 
               <form className="mt-5 flex flex-col gap-3" onSubmit={handleChat}>

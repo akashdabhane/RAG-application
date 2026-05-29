@@ -266,9 +266,11 @@ def chat():
             search_kwargs={"k": 4}
         )
 
+        print("Retriever", retriever)
         relevant_docs = retriever.invoke(
             question
         )
+        print("relevant_docs", relevant_docs)
 
         # -------------------------
         # CREATE CONTEXT
@@ -307,10 +309,26 @@ QUESTION:
 
         answer = response.text
 
+        # Ensure unique metadata entries for response
+        seen_metadata = set()
+        unique_metadata = []
+
+        for doc in relevant_docs:
+            entry = {
+                "source": doc.metadata.get("source", "unknown"),
+                "page_label": doc.metadata.get("page_label", "unknown")
+            }
+            key = (entry["source"], entry["page_label"])
+            if key in seen_metadata:
+                continue
+            seen_metadata.add(key)
+            unique_metadata.append(entry)
+
         return jsonify({
             "question": question,
             "answer": answer,
-            "retrieved_chunks": len(relevant_docs)
+            "retrieved_chunks": len(relevant_docs),
+            "metadata": unique_metadata
         })
 
     except Exception as e:

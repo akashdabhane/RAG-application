@@ -103,6 +103,39 @@ body {
   animation: fade-up 0.9s ease-out 0.1s both;
 }
 
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(21, 18, 15, 0.35) transparent;
+}
+
+.chat-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(240, 109, 59, 0.45),
+    rgba(21, 18, 15, 0.35)
+  );
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(240, 109, 59, 0.75),
+    rgba(21, 18, 15, 0.45)
+  );
+  background-clip: content-box;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
