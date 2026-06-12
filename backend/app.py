@@ -266,11 +266,9 @@ def chat():
             search_kwargs={"k": 4}
         )
 
-        print("Retriever", retriever)
         relevant_docs = retriever.invoke(
             question
         )
-        print("relevant_docs", relevant_docs)
 
         # -------------------------
         # CREATE CONTEXT

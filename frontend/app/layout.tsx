@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 
 const displaySerif = Instrument_Serif({
   variable: "--font-display",
@@ -29,6 +32,8 @@ export default function RootLayout({
       lang="en"
       className={`${displaySerif.variable} ${bodySans.variable} h-full antialiased`}
     >
+      <Analytics/>
+      <SpeedInsights/>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
